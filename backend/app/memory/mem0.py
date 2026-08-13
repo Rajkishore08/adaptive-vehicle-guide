@@ -14,7 +14,7 @@ class Mem0Service:
         headers = {"Authorization": f"Token {self.api_key}", "Content-Type": "application/json"}
         payload = {"query": query, "user_id": user_id}
         try:
-            async with httpx.AsyncClient(timeout=5.0) as client:
+            async with httpx.AsyncClient(timeout=1.5) as client:
                 resp = await client.post(f"{self.base_url}/memories/search/", headers=headers, json=payload)
                 if resp.status_code == 200:
                     return resp.json().get("results", [])

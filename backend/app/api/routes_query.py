@@ -26,12 +26,13 @@ async def query_endpoint(req: ClassifyRequest):
     c_res = res["classification"]
     elapsed_ms = int((time.time() - start_time) * 1000)
 
-    # 3. Persist useful investigation memory to Mem0 asynchronously
+    # 3. Persist useful investigation memory to Mem0 asynchronously in non-blocking fashion
     if c_res["complexity"] in ("MEDIUM", "COMPLEX"):
-        await mem0_service.add_memory(
+        import asyncio
+        asyncio.create_task(mem0_service.add_memory(
             text=f"Query: {req.query} | Strategy: {c_res['strategy']} | Answer Summary: {res['answer'][:150]}",
             metadata={"complexity": c_res["complexity"]}
-        )
+        ))
 
     safety_critical = any(k in req.query.lower() for k in SAFETY_KEYWORDS)
 
