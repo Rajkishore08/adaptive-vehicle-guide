@@ -2228,21 +2228,9 @@
 
     ]
 
-  },
-
-  "final_instruction_to_lovable": "Build the complete frontend application described above in one coherent implementation. Prioritize a polished working UI over adding backend functionality. Use deterministic mock data and mock services. Ensure every page, navigation item, button, demo scenario, chart, investigation trace and interaction works. Do not ask for clarification unless absolutely necessary. Make sensible implementation decisions while preserving the Adaptive RAG research concept. The final application must feel like a real AI research product rather than a generic chatbot."
+  }
 
 }
-
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/e7fe5b15-a6dc-4b36-a18d-e6df166d1978).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 

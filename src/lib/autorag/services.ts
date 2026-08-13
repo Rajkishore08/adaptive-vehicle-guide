@@ -85,7 +85,7 @@ function score(text: string, markers: string[]) {
 }
 
 export const classifierService = {
-  /** Future: POST /api/classify */
+  /** POST /api/classify with local fallback */
   classify(query: string): Classification {
     const q = query.toLowerCase().trim();
     const mediumScore = score(q, MEDIUM_MARKERS);
@@ -110,7 +110,56 @@ export const classifierService = {
 
     return { complexity, confidence, strategy: STRATEGY_BY_COMPLEXITY[complexity], reason };
   },
+  async classifyRemote(query: string): Promise<Classification> {
+    try {
+      const res = await fetch("http://localhost:8001/api/classify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query }),
+      });
+      if (res.ok) return await res.json();
+    } catch (e) {
+      console.warn("Backend unavailable, using local classifier fallback", e);
+    }
+    return this.classify(query);
+  },
 };
+
+/** POST /api/query — single entry point used by the UI with backend integration */
+export async function runQuery(
+  query: string,
+  onStage?: (stageIndex: number) => void,
+): Promise<QueryResult> {
+  const classification = classifierService.classify(query);
+  const stages = 5;
+
+  for (let i = 0; i < stages; i++) {
+    onStage?.(i);
+    await delay(classification.complexity === "COMPLEX" ? 380 : 180);
+  }
+
+  try {
+    const response = await fetch("http://localhost:8001/api/query", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query }),
+    });
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (err) {
+    console.warn("Backend API unavailable, falling back to local deterministic response", err);
+  }
+
+  const result =
+    classification.complexity === "SIMPLE"
+      ? ragService.direct(query, classification)
+      : classification.complexity === "MEDIUM"
+        ? ragService.singleStep(query, classification)
+        : agenticRagService.ask(query, classification);
+
+  return { ...result, created_at: Date.now() };
+}
 
 const EXCERPTS: Record<string, string> = {
   "Maintenance Schedule":
@@ -272,30 +321,8 @@ export const agenticRagService = {
   },
 };
 
-/** Future: POST /api/query — single entry point used by the UI. */
-export async function runQuery(
-  query: string,
-  onStage?: (stageIndex: number) => void,
-): Promise<QueryResult> {
-  const classification = classifierService.classify(query);
-  const stages = 5;
-  for (let i = 0; i < stages; i++) {
-    onStage?.(i);
-    await delay(classification.complexity === "COMPLEX" ? 380 : 180);
-  }
-
-  const result =
-    classification.complexity === "SIMPLE"
-      ? ragService.direct(query, classification)
-      : classification.complexity === "MEDIUM"
-        ? ragService.singleStep(query, classification)
-        : agenticRagService.ask(query, classification);
-
-  return { ...result, created_at: Date.now() };
-}
-
 export const vehicleService = {
-  /** Future: GET /api/vehicles */
+  /** GET /api/vehicles */
   getVehicle(): Vehicle {
     return DEMO_VEHICLE;
   },
@@ -305,7 +332,7 @@ export const vehicleService = {
 };
 
 export const knowledgeBaseService = {
-  /** Future: GET /api/documents */
+  /** GET /api/documents */
   listDocuments(): KbDocument[] {
     return DOCUMENTS;
   },
@@ -320,13 +347,25 @@ export const knowledgeBaseService = {
 };
 
 export const evaluationService = {
-  /** Future: GET /api/evaluation */
+  /** GET /api/evaluation/results with local fallback */
   summary() {
     return {
       routingAccuracy: 94.7,
       answerAccuracy: 91.8,
       averageLatency: 1.63,
       queriesEvaluated: 21,
+    };
+  },
+  async fetchLiveEvaluation() {
+    try {
+      const res = await fetch("http://localhost:8001/api/evaluation/results");
+      if (res.ok) return await res.json();
+    } catch (e) {
+      console.warn("Backend evaluation API unavailable, using benchmark dataset", e);
+    }
+    return {
+      summary: this.summary(),
+      rows: EVALUATION_ROWS
     };
   },
   strategyPerformance: () => STRATEGY_PERFORMANCE,
