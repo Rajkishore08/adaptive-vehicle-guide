@@ -4,6 +4,13 @@
 [![Framework: Custom Python Agentic Loop](https://img.shields.io/badge/Agentic--Orchestration-100%25%20Custom%20Python-emerald)](file:///Users/rajkishores/Workspace/Adaptive%20Rag/adaptive-vehicle-guide/backend/app/rag/agentic.py)
 [![LLM: NVIDIA NIM API](https://img.shields.io/badge/LLM--Provider-NVIDIA%20NIM%20%2F%20Llama%203.3-rose)](https://integrate.api.nvidia.com/v1)
 
+> ### 📌 Quick Documentation & Specification Links
+> - 📄 **[Master Architectural Reference & Guide (`PROJECT_DOCUMENTATION.md`)](./PROJECT_DOCUMENTATION.md)**
+> - 📋 **[Software Requirements Specification (`PROJECT_SPECIFICATION.md`)](./PROJECT_SPECIFICATION.md)**
+> - 📜 **[NAACL 2024 Research & Implementation Paper (`RESEARCH_WRITEUP.md`)](./RESEARCH_WRITEUP.md)**
+> - 🎬 **[Demo Video Presentation Script (`DEMO_VIDEO_SCRIPT.md`)](./DEMO_VIDEO_SCRIPT.md)**
+> - 📦 **[Repomix Full Codebase Export (`repomix-output.md`)](./repomix-output.md)**
+
 AutoRAG is a production-grade **Adaptive Retrieval-Augmented Generation (Adaptive-RAG)** system designed for vehicle service advisors, technicians, and car owners. It dynamically classifies query complexity before selecting the optimal retrieval and reasoning path:
 
 1. **SIMPLE Queries** $\rightarrow$ **Direct LLM Generation** (0 vector retrievals, 0ms RAG overhead)
