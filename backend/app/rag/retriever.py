@@ -81,7 +81,7 @@ class VectorRetriever:
         chunks = [raw_text[i:i+chunk_size] for i in range(0, len(raw_text), chunk_size)] or [raw_text]
         chunk_count = len(chunks)
 
-        EXCERPTS[doc_name] = f"PARSED PDF DOCUMENT: {doc_name.upper()} ({page_count} Pages, {chunk_count} Chunks Indexed)\n\n• " + "\n\n• ".join(chunks[:6])
+        EXCERPTS[doc_name] = f"PARSED PDF DOCUMENT: {doc_name.upper()} ({page_count} Pages, {chunk_count} Chunks Indexed)\n\n• " + "\n\n• ".join(chunks[:10])
 
         doc_record = {
             "id": f"doc-custom-{len(self.custom_documents) + 11}",
@@ -91,7 +91,7 @@ class VectorRetriever:
             "pages": page_count,
             "chunks": chunk_count,
             "status": "Indexed",
-            "excerpt": EXCERPTS[doc_name][:300] + "..."
+            "excerpt": EXCERPTS[doc_name]
         }
         self.custom_documents.append(doc_record)
         return doc_record

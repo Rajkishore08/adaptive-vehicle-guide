@@ -352,7 +352,18 @@ export const knowledgeBaseService = {
   async listDocuments(): Promise<KbDocument[]> {
     try {
       const res = await fetch(`${getApiBaseUrl()}/api/documents`);
-      if (res.ok) return await res.json();
+      if (res.ok) {
+        const fetchedDocs: KbDocument[] = await res.json();
+        for (const doc of fetchedDocs) {
+          if (doc.excerpt) {
+            registerExcerpt(doc.name, doc.excerpt);
+          }
+          if (!DOCUMENTS.some((d) => d.id === doc.id)) {
+            DOCUMENTS.push(doc);
+          }
+        }
+        return DOCUMENTS;
+      }
     } catch (err) {
       console.warn("Backend documents endpoint unreachable, using cached docs", err);
     }
