@@ -565,6 +565,6 @@ This codebase strictly avoids third-party agent orchestration frameworks:
    vercel
    ```
 3. Set your Environment Variables in Vercel Dashboard:
-   - `NVIDIA_API_KEY`: `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`
-   - `GROQ_API_KEY`: `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`
-   - `MEM0_API_KEY`: `m0-AO2SKu2uf0hdhzJWJ3oaD85D4zG0pqPKEuHK0EtG`
+   - `NVIDIA_API_KEY`: `your_nvidia_api_key_here`
+   - `GROQ_API_KEY`: `your_groq_api_key_here`
+   - `MEM0_API_KEY`: `your_mem0_api_key_here`
