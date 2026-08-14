@@ -17,7 +17,11 @@ class Mem0Service:
             async with httpx.AsyncClient(timeout=1.5) as client:
                 resp = await client.post(f"{self.base_url}/memories/search/", headers=headers, json=payload)
                 if resp.status_code == 200:
-                    return resp.json().get("results", [])
+                    data = resp.json()
+                    if isinstance(data, list):
+                        return data
+                    elif isinstance(data, dict):
+                        return data.get("results", data.get("memories", []))
         except Exception as e:
             print(f"[Mem0Service] Search exception: {e}")
         return []

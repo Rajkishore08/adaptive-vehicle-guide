@@ -5,6 +5,7 @@ import { AppShell } from "@/components/autorag/AppShell";
 import { PageHeader, SectionHeading } from "@/components/autorag/MetricCard";
 import { AnswerCard } from "@/components/autorag/AnswerCard";
 import { InvestigationTimeline } from "@/components/autorag/InvestigationTimeline";
+import { FlowNodeGraph } from "@/components/autorag/FlowNodeGraph";
 import { ComplexityBadge, StrategyBadge } from "@/components/autorag/badges";
 import { investigationStore, useInvestigations } from "@/lib/autorag/store";
 
@@ -107,7 +108,8 @@ function InvestigationPage() {
                       </div>
                     </div>
 
-                    <SectionHeading title="Execution Timeline" subtitle="Internal pipeline steps executed for this query" />
+                    <SectionHeading title="Execution Timeline & Visual Node Graph" subtitle="Internal pipeline steps executed for this query" />
+                    <FlowNodeGraph result={selectedResult} />
                     <InvestigationTimeline steps={selectedResult.steps} />
                   </section>
 

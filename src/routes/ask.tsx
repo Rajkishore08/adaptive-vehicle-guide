@@ -61,50 +61,65 @@ function AskPage() {
             subtitle="Select a demo scenario below to trigger real-time adaptive routing"
           />
           <div className="grid gap-4 sm:grid-cols-3 mt-3">
-            <button
-              type="button"
-              onClick={() => handleSearch(DEMO_QUERIES.simple)}
-              className="group relative rounded-xl border border-emerald-500/40 bg-emerald-950/20 p-4 text-left transition-all duration-300 hover:border-emerald-500/80 hover:bg-emerald-950/40 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)]"
-            >
+            {/* Simple Queries */}
+            <div className="space-y-2 rounded-xl border border-emerald-500/40 bg-emerald-950/20 p-4">
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-400 uppercase tracking-wider">
-                  <Zap className="size-3.5" /> Simple Query
+                  <Zap className="size-3.5" /> Simple Queries ({DEMO_QUERIES.simple.length})
                 </span>
-                <Play className="size-3.5 text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
-              <p className="mt-2 text-xs font-medium text-foreground line-clamp-2 leading-relaxed">{DEMO_QUERIES.simple}</p>
-              <span className="mt-2 inline-block text-[11px] font-mono text-muted-foreground">Route: Direct LLM (0 retrievals)</span>
-            </button>
+              <select
+                onChange={(e) => e.target.value && handleSearch(e.target.value)}
+                className="w-full rounded-md border border-emerald-500/40 bg-background/90 px-3 py-2 text-xs font-medium text-foreground focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                defaultValue=""
+              >
+                <option value="" disabled>Select Simple Question...</option>
+                {DEMO_QUERIES.simple.map((q) => (
+                  <option key={q} value={q}>{q}</option>
+                ))}
+              </select>
+              <span className="inline-block text-[11px] font-mono text-emerald-300">Route: Direct LLM (0 retrievals)</span>
+            </div>
 
-            <button
-              type="button"
-              onClick={() => handleSearch(DEMO_QUERIES.medium)}
-              className="group relative rounded-xl border border-amber-500/40 bg-amber-950/20 p-4 text-left transition-all duration-300 hover:border-amber-500/80 hover:bg-amber-950/40 hover:shadow-[0_0_15px_rgba(245,158,11,0.15)]"
-            >
+            {/* Medium Queries */}
+            <div className="space-y-2 rounded-xl border border-amber-500/40 bg-amber-950/20 p-4">
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1.5 text-xs font-bold text-amber-400 uppercase tracking-wider">
-                  <Search className="size-3.5" /> Medium Query
+                  <Search className="size-3.5" /> Medium Queries ({DEMO_QUERIES.medium.length})
                 </span>
-                <Play className="size-3.5 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
-              <p className="mt-2 text-xs font-medium text-foreground line-clamp-2 leading-relaxed">{DEMO_QUERIES.medium}</p>
-              <span className="mt-2 inline-block text-[11px] font-mono text-muted-foreground">Route: Single-Step RAG (1 pass)</span>
-            </button>
+              <select
+                onChange={(e) => e.target.value && handleSearch(e.target.value)}
+                className="w-full rounded-md border border-amber-500/40 bg-background/90 px-3 py-2 text-xs font-medium text-foreground focus:outline-none focus:ring-1 focus:ring-amber-400"
+                defaultValue=""
+              >
+                <option value="" disabled>Select Medium Question...</option>
+                {DEMO_QUERIES.medium.map((q) => (
+                  <option key={q} value={q}>{q}</option>
+                ))}
+              </select>
+              <span className="inline-block text-[11px] font-mono text-amber-300">Route: Single-Step RAG (1 pass)</span>
+            </div>
 
-            <button
-              type="button"
-              onClick={() => handleSearch(DEMO_QUERIES.complex)}
-              className="group relative rounded-xl border border-rose-500/50 bg-rose-950/30 p-4 text-left transition-all duration-300 hover:border-rose-500 hover:bg-rose-950/50 hover:shadow-[0_0_20px_rgba(244,63,94,0.25)] scale-[1.02]"
-            >
+            {/* Complex Queries */}
+            <div className="space-y-2 rounded-xl border border-rose-500/50 bg-rose-950/30 p-4">
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1.5 text-xs font-bold text-rose-300 uppercase tracking-wider">
-                  <Network className="size-3.5" /> Complex Diagnostic (Featured)
+                  <Network className="size-3.5" /> Complex Diagnostic ({DEMO_QUERIES.complex.length})
                 </span>
-                <Play className="size-3.5 text-rose-300 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
-              <p className="mt-2 text-xs font-semibold text-foreground line-clamp-2 leading-relaxed">{DEMO_QUERIES.complex}</p>
-              <span className="mt-2 inline-block text-[11px] font-mono text-rose-300">Route: Agentic Multi-Hop RAG</span>
-            </button>
+              <select
+                onChange={(e) => e.target.value && handleSearch(e.target.value)}
+                className="w-full rounded-md border border-rose-500/50 bg-background/90 px-3 py-2 text-xs font-medium text-foreground focus:outline-none focus:ring-1 focus:ring-rose-400"
+                defaultValue=""
+              >
+                <option value="" disabled>Select Complex Question...</option>
+                {DEMO_QUERIES.complex.map((q) => (
+                  <option key={q} value={q}>{q}</option>
+                ))}
+              </select>
+              <span className="inline-block text-[11px] font-mono text-rose-300">Route: Agentic Multi-Hop RAG</span>
+            </div>
           </div>
         </section>
 
@@ -152,15 +167,33 @@ function AskPage() {
 
         {loading && (
           <section className="panel p-6 space-y-4 border-system/40 bg-surface/90 shadow-xl">
-            <SectionHeading title="Executing Adaptive Pipeline" subtitle="Staged execution of adaptive retrieval and reasoning steps..." />
+            <SectionHeading
+              title={`Executing ${previewClassification?.complexity ?? "Adaptive"} Pipeline`}
+              subtitle={`Live dynamic flow for ${previewClassification?.complexity ?? "evaluated"} query intent...`}
+            />
             <InvestigationTimeline
-              steps={[
-                { number: 1, title: "Query Complexity Classification", detail: "Evaluating intent & symptom count with NVIDIA Llama 3.1", status: "completed" },
-                { number: 2, title: "Strategy Selection", detail: "Routing query execution path dynamically", status: "completed" },
-                { number: 3, title: "Vector Search & Document Retrieval", detail: "Fetching dense evidence chunks from technical manuals", status: "completed" },
-                { number: 4, title: "Cross-System Evidence Synthesis", detail: "Matching specs against logged service history records", status: "completed" },
-                { number: 5, title: "Final Report Generation", detail: "Generating grounded diagnostic report", status: "completed" },
-              ]}
+              steps={
+                (previewClassification?.complexity ?? "COMPLEX") === "SIMPLE"
+                  ? [
+                      { number: 1, title: "Query Complexity Classification", detail: "Evaluated as SIMPLE (general automotive knowledge)", status: "completed" },
+                      { number: 2, title: "Strategy Selection", detail: "Routed to Direct LLM — Vector Search Bypassed (0ms overhead)", status: "completed" },
+                      { number: 3, title: "Direct Answer Generation", detail: "Generating direct response from LLM memory", status: "completed" },
+                    ]
+                  : (previewClassification?.complexity ?? "COMPLEX") === "MEDIUM"
+                    ? [
+                        { number: 1, title: "Query Complexity Classification", detail: "Evaluated as MEDIUM (requires vehicle manual lookup)", status: "completed" },
+                        { number: 2, title: "Strategy Selection", detail: "Routed to Single-Step RAG (1 targeted pass scheduled)", status: "completed" },
+                        { number: 3, title: "Single-Pass Document Retrieval", detail: "Fetching vector chunk from Maintenance Schedule", status: "completed" },
+                        { number: 4, title: "Grounded Answer Generation", detail: "Synthesizing answer grounded in retrieved document section", status: "completed" },
+                      ]
+                    : [
+                        { number: 1, title: "Query Complexity Classification", detail: "Evaluated as COMPLEX (multi-symptom / multi-system diagnosis)", status: "completed" },
+                        { number: 2, title: "Query Sub-Question Decomposition", detail: "Decomposing symptom query into focused sub-questions", status: "completed" },
+                        { number: 3, title: "Multi-Pass Vector Retrieval", detail: "Searching evidence across multiple technical manuals & guides", status: "completed" },
+                        { number: 4, title: "Cross-System Maintenance Synthesis", detail: "Cross-referencing symptoms against vehicle service history", status: "completed" },
+                        { number: 5, title: "Staged Diagnostic Report Generation", detail: "Synthesizing prioritized inspection order and diagnostic report", status: "completed" },
+                      ]
+              }
               currentStage={stageIndex}
               isExecuting
             />

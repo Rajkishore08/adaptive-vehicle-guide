@@ -13,10 +13,9 @@ class ComplexityClassifier:
                 "content": (
                     "You are the query complexity classifier for an Adaptive RAG vehicle service system.\n"
                     "Classify the user's query into exactly SIMPLE, MEDIUM, or COMPLEX.\n"
-                    "- SIMPLE: Direct LLM knowledge is sufficient (e.g. 'What does an air filter do?').\n"
-                    "- MEDIUM: One focused retrieval from vehicle technical manuals is required (e.g. 'When should spark plugs be replaced?').\n"
-                    "- COMPLEX: Multiple symptoms, multiple documents, maintenance history, or iterative multi-hop reasoning are required.\n"
-                    "Do not classify every vehicle-specific query as COMPLEX.\n"
+                    "- SIMPLE: Conceptual or general automotive knowledge (e.g. 'What is engine coolant?', 'What does a clutch do?').\n"
+                    "- MEDIUM: Vehicle-specific specification, schedule, interval or single manual section lookup (e.g. 'What is the recommended service interval?', 'When should spark plugs be replaced?').\n"
+                    "- COMPLEX: Vehicle troubleshooting, diagnostic symptoms, performance degradation, multi-symptom issues, or maintenance history cross-referencing (e.g. 'My mileage has dropped significantly. What should I inspect first?', 'My clutch feels hard', 'The engine idles roughly after starting', 'What service items may be overdue?').\n"
                     "Respond STRICTLY in JSON format with keys: 'complexity' (SIMPLE|MEDIUM|COMPLEX), 'confidence' (float 0.0-1.0), 'reason' (string), 'signals' (list of strings)."
                 )
             },

@@ -55,17 +55,24 @@ function KnowledgeBasePage() {
                     relevance: 0.95,
                   })
                 }
-                className="flex items-start gap-3.5 rounded-md border border-border bg-surface p-4 text-left transition-all hover:border-system/40 hover:bg-surface-elevated"
+                className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-4 text-left transition-all hover:border-system/50 hover:bg-surface-elevated hover:shadow-lg"
               >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-md border border-system/30 bg-system/10 text-system">
-                  <FileText className="size-5" aria-hidden />
-                </span>
+                <div className="relative h-32 w-full overflow-hidden rounded-lg border border-border/60 bg-background">
+                  <img
+                    src={doc.name.includes("Owner") ? "/doc_owners_manual.jpg" : "/doc_troubleshooting.jpg"}
+                    alt={doc.name}
+                    className="h-full w-full object-cover opacity-85 hover:scale-105 transition-transform duration-300"
+                  />
+                  <span className="absolute bottom-2 right-2 rounded bg-background/90 px-2 py-0.5 font-mono text-[10px] font-bold text-system">
+                    10 Pages / 45 Chunks
+                  </span>
+                </div>
                 <div className="space-y-1">
                   <h3 className="font-semibold text-foreground">{doc.name}</h3>
                   <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
                     <span>{doc.pages} pages</span>
                     <span>·</span>
-                    <span>{doc.chunks} chunks</span>
+                    <span>{doc.chunks} vector chunks</span>
                   </div>
                   <span className="inline-flex items-center gap-1 text-[11px] font-medium text-simple">
                     <CheckCircle2 className="size-3" aria-hidden />

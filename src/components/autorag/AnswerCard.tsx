@@ -54,12 +54,12 @@ export function SourceDrawer({
             <div className="space-y-5">
               <div>
                 <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                  <span>Documented Technical Excerpt</span>
+                  <span>Documented Technical Manual Excerpt</span>
                   <span className="text-emerald-400 font-mono">Relevance: {(source.relevance * 100).toFixed(1)}%</span>
                 </div>
-                <div className="relative rounded-lg border border-system/30 bg-background/90 p-4 font-mono text-xs leading-relaxed text-foreground shadow-inner">
+                <div className="relative rounded-lg border border-system/30 bg-background/90 p-4 font-mono text-xs leading-relaxed text-foreground shadow-inner whitespace-pre-line">
                   <div className="absolute top-2 right-2 flex size-2 rounded-full bg-emerald-400" />
-                  "{source.excerpt ?? excerptFor(source.document)}"
+                  {source.excerpt ?? excerptFor(source.document)}
                 </div>
               </div>
 
@@ -150,7 +150,22 @@ export function AnswerCard({ result }: { result: QueryResult }) {
           <span className="text-xs text-muted-foreground font-medium">{result.reason}</span>
         </div>
         <SectionHeading title="Synthesized Grounded Answer" />
-        <p className="text-base leading-relaxed text-foreground/95 font-normal">{result.answer}</p>
+        <div className="prose prose-invert max-w-none space-y-4 text-sm leading-relaxed text-foreground/95">
+          {result.answer.split("\n\n").map((paragraph, idx) => {
+            if (paragraph.startsWith("**Stage") || paragraph.startsWith("**Diagnostic Report") || paragraph.startsWith("**Recommendation")) {
+              return (
+                <div key={idx} className="rounded-lg border border-system/30 bg-system/10 p-3.5 shadow-sm">
+                  <p className="font-bold text-system text-base">{paragraph.replace(/\*\*/g, "")}</p>
+                </div>
+              );
+            }
+            return (
+              <p key={idx} className="bg-background/40 p-3 rounded-md border border-border/40">
+                {paragraph}
+              </p>
+            );
+          })}
+        </div>
       </section>
 
       {/* Staged Recommendations for Complex Queries */}

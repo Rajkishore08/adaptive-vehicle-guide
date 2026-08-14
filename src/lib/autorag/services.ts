@@ -163,21 +163,21 @@ export async function runQuery(
 
 const EXCERPTS: Record<string, string> = {
   "Maintenance Schedule":
-    "Air filter inspection and replacement should be performed according to the specified service interval. Severe operating conditions such as dusty roads require more frequent inspection.",
+    "CHAPTER 3: PERIODIC SERVICE SCHEDULE (Pages 1-10)\n\n• Air Filter Maintenance (p. 18): Inspect every 5,000 km, replace every 10,000 km. Severe operating conditions such as unpaved or dusty roads mandate replacement every 5,000 km.\n• Engine Oil & Filter (p. 12): Change API SN 20W-50 oil every 10,000 km or 12 months.\n• Spark Plugs (p. 22): Inspect gap (0.8-0.9mm) every 10,000 km, replace nickel spark plugs every 20,000 km.\n• Clutch Free-Play (p. 34): Inspect pedal free-play (10-15 mm) every 10,000 km.",
   "Fuel System Guide":
-    "Reduced fuel economy is commonly associated with a restricted air intake, degraded ignition components or injector deposits. Verify intake restriction before component replacement.",
+    "TECHNICAL MANUAL SECTION 5: FUEL INJECTION & AIR INTAKE (Pages 35-45)\n\n• Fuel Economy Degradation (p. 41): Reduced fuel efficiency is directly linked to restricted intake air flow, fouled fuel injectors, or oxygen sensor drift.\n• Intake Pressure Specs (p. 38): Manifold Absolute Pressure (MAP) baseline 28-34 kPa at idle.\n• Injector Pulse Width (p. 42): Standard idle pulse width 2.1ms to 2.5ms under full engine operating temperature.",
   "Transmission & Clutch Guide":
-    "Hard clutch pedal operation should be checked against the documented free-play specification. Inspect the clutch cable routing, lubrication and release mechanism condition.",
+    "MANUAL SECTION 4: CLUTCH ASSEMBLY & ACTUATION MECHANISM (Pages 55-68)\n\n• Hard Clutch Operation (p. 63): Stiffness in pedal stroke indicates dry clutch release fork pivot, worn cable sleeve, or binding diaphragm spring fingers.\n• Free-Play Adjustment (p. 65): Target pedal free play 12mm ± 3mm. Adjust cable nut lock ring at transmission housing bracket.\n• Release Bearing Noise (p. 67): Grinding noise when depressing pedal indicates throw-out bearing wear.",
   "Troubleshooting Guide":
-    "Abnormal idle behaviour or vehicle creep should be investigated at the idle speed control and throttle body assembly before adjusting any related linkage.",
+    "DIAGNOSTIC MATRIX & SYMPTOM TREES (Pages 20-35)\n\n• Abnormal Idle & Vehicle Creep (p. 27): Rough idle or unwanted engine surging is caused by Idle Air Control (IAC) valve carbon deposits or throttle body vacuum leaks.\n• Multi-Symptom Diagnostic Order (p. 30): 1. Air Intake & MAP Sensor -> 2. Clutch Actuation & Free-Play -> 3. Throttle Body & Idle Control Valve.",
   "Engine System Guide":
-    "Idle instability after start-up may indicate deposits in the throttle body or an out-of-specification idle actuator response.",
+    "SERVICE MANUAL SECTION 2: ENGINE MECHANICAL & LUBRICATION (Pages 80-94)\n\n• Cylinder Head & Valve Train (p. 84): Hydraulic lash adjusters baseline clearance 0.20mm intake, 0.25mm exhaust (cold).\n• Idle Instability (p. 91): Check PCV valve operation and intake manifold gasket sealing under high vacuum conditions.",
   "Service Manual":
-    "Follow the documented inspection order and record measured values before replacing any assembly.",
+    "HYUNDAI SANTRO XING SHOP REPAIR MANUAL (Pages 1-328)\n\n• Workshop Procedure (p. 102): Always record baseline sensor readings prior to component disassembly.\n• Fastener Torque Specs (p. 210): Cylinder head bolts 65 Nm, Clutch pressure plate bolts 22 Nm, Oil pan bolts 10 Nm.",
   "Service Invoices":
-    "Recent service history: general service at 34,000 km, spark plug replacement at 33,000 km and air filter replacement at 31,000 km.",
+    "VEHICLE LOG BOOK & HISTORICAL INVOICES (Pages 1-20)\n\n• Record 34,000 km (July 2026): General vehicle inspection, oil & filter change.\n• Record 33,000 km (Feb 2026): Spark plug replacement (NGK BKR5ES-11).\n• Record 31,000 km (Sept 2025): Air filter element replacement.\n• Record 28,500 km (March 2025): Engine oil flush and brake pad inspection.",
   "Owner's Manual":
-    "Refer to the maintenance section for the recommended service items and operating condition adjustments.",
+    "HYUNDAI SANTRO XING OWNER OPERATING MANUAL (Pages 1-142)\n\n• Vehicle Specifications (p. 14): Engine 1.1L Epsilon i4 SOHC 12V, Fuel tank capacity 35L.\n• Maintenance Recommendations (p. 88): Check coolant and brake fluid levels weekly before driving.",
 };
 
 export function excerptFor(document: string) {
@@ -375,9 +375,31 @@ export const evaluationService = {
 };
 
 export const DEMO_QUERIES = {
-  simple: "What does an engine air filter do?",
-  medium:
+  simple: [
+    "What does an engine air filter do?",
+    "What is engine coolant?",
+    "What is a spark plug?",
+    "What does a clutch do?",
+    "What is an alternator?",
+    "What is engine oil?",
+    "What does a battery do?"
+  ],
+  medium: [
     "When should the air filter be replaced according to the manufacturer's maintenance schedule?",
-  complex:
+    "What engine oil does the manufacturer recommend?",
+    "What is the recommended tyre pressure?",
+    "When should spark plugs be replaced?",
+    "What coolant specification is recommended?",
+    "What is the recommended service interval?",
+    "What is the recommended clutch inspection interval?"
+  ],
+  complex: [
     "My car has poor mileage, hard clutch operation and sometimes moves forward without pressing the accelerator. Based on my maintenance history and the manufacturer's troubleshooting documentation, what should I inspect first?",
+    "My mileage has dropped significantly. What should I inspect first?",
+    "My clutch feels hard. Based on the service documentation, what are the possible causes?",
+    "The engine idles roughly after starting. What systems should I investigate?",
+    "My vehicle overheats only when the AC is running. What could cause this?",
+    "My car has poor mileage and rough idle. Which maintenance items should I check together?",
+    "Based on my recent maintenance history and the manufacturer's maintenance schedule, what service items may be overdue?"
+  ]
 } as const;
