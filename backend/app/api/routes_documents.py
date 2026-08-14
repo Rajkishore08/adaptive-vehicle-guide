@@ -1,8 +1,10 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, UploadFile, File, HTTPException
+from typing import List, Dict, Any
+from app.rag.retriever import retriever
 
 router_docs = APIRouter(prefix="/api/documents", tags=["Documents"])
 
-DOCUMENTS = [
+BASE_DOCUMENTS = [
     {"id": "doc-1", "name": "Owner's Manual", "type": "PDF", "pages": 142, "chunks": 624, "status": "Indexed"},
     {"id": "doc-2", "name": "Maintenance Schedule", "type": "PDF", "pages": 48, "chunks": 213, "status": "Indexed"},
     {"id": "doc-3", "name": "Service Manual", "type": "PDF", "pages": 328, "chunks": 1104, "status": "Indexed"},
@@ -17,4 +19,21 @@ DOCUMENTS = [
 
 @router_docs.get("/")
 async def list_documents_endpoint():
-    return DOCUMENTS
+    return BASE_DOCUMENTS + retriever.custom_documents
+
+@router_docs.post("/upload")
+async def upload_pdf_document_endpoint(file: UploadFile = File(...)):
+    if not file.filename or not file.filename.lower().endswith(".pdf"):
+        raise HTTPException(status_code=400, detail="Only PDF files (.pdf) can be uploaded to the Knowledge Base.")
+
+    try:
+        content = await file.read()
+        doc_record = await retriever.ingest_pdf(content, file.filename)
+        return {
+            "status": "success",
+            "message": f"Successfully parsed and indexed PDF manual '{doc_record['name']}' into the Vector Store.",
+            "document": doc_record
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to process PDF document: {str(e)}")
+

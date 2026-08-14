@@ -10,4 +10,8 @@ if root_dir not in sys.path:
 if backend_dir not in sys.path:
     sys.path.insert(0, backend_dir)
 
-from app.main import app
+try:
+    from app.main import app
+except ImportError:
+    from backend.app.main import app
+

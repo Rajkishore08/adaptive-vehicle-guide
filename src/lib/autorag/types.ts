@@ -24,6 +24,7 @@ export interface KbDocument {
   pages: number;
   chunks: number;
   status: "Indexed" | "Indexing";
+  excerpt?: string;
 }
 
 export interface SourceRef {

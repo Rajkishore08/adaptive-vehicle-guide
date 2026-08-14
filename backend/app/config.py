@@ -1,5 +1,14 @@
 import os
-from pydantic_settings import BaseSettings, SettingsConfigDict
+try:
+    from pydantic_settings import BaseSettings, SettingsConfigDict
+except ImportError:
+    try:
+        from pydantic.v1 import BaseSettings  # type: ignore
+        SettingsConfigDict = dict  # type: ignore
+    except ImportError:
+        from pydantic import BaseModel as BaseSettings  # type: ignore
+        SettingsConfigDict = dict  # type: ignore
+
 from typing import List
 
 class Settings(BaseSettings):
