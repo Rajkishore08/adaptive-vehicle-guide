@@ -84,6 +84,16 @@ function score(text: string, markers: string[]) {
   return markers.reduce((n, m) => (text.includes(m) ? n + 1 : n), 0);
 }
 
+function getApiBaseUrl(): string {
+  if (typeof window !== "undefined") {
+    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+      return "http://localhost:8001";
+    }
+    return "";
+  }
+  return "http://localhost:8001";
+}
+
 export const classifierService = {
   /** POST /api/classify with local fallback */
   classify(query: string): Classification {
@@ -112,7 +122,7 @@ export const classifierService = {
   },
   async classifyRemote(query: string): Promise<Classification> {
     try {
-      const res = await fetch("http://localhost:8001/api/classify", {
+      const res = await fetch(`${getApiBaseUrl()}/api/classify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query }),
@@ -139,7 +149,7 @@ export async function runQuery(
   }
 
   try {
-    const response = await fetch("http://localhost:8001/api/query", {
+    const response = await fetch(`${getApiBaseUrl()}/api/query`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query }),
@@ -358,7 +368,7 @@ export const evaluationService = {
   },
   async fetchLiveEvaluation() {
     try {
-      const res = await fetch("http://localhost:8001/api/evaluation/results");
+      const res = await fetch(`${getApiBaseUrl()}/api/evaluation/results`);
       if (res.ok) return await res.json();
     } catch (e) {
       console.warn("Backend evaluation API unavailable, using benchmark dataset", e);
